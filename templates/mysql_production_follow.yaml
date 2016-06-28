@@ -1,0 +1,27 @@
+version: "2.0"
+schemaVersion: v1
+app_id: maria_Follow
+tiers:
+  - name: maria
+    type: db
+    replicas: 1
+    containers:
+    - name: mariadb
+      image: apporbit/db_env
+      environment:
+        - MYSQL_ROOT_USER: RUSER
+          MYSQL_ROOT_PASSWORD: RPASSWORD
+          MASTER_HOST: "HOST_IP"
+          MASTER_LOG_FILE: "LOGFILE"
+          MASTER_LOG_POS: "LOGPOS"
+          MASTER_USER: REPL_USER
+          MASTER_PASSWORD: REPL_PASSWD
+          
+      ports:
+        - containerPort: 3306
+          service: external
+          url:
+          - mysql:APPORBIT_SERVICE:APPORBIT_PORT
+      volumes:
+        - containerVolume: "/var/lib/mysql"
+          min-size: 1G
